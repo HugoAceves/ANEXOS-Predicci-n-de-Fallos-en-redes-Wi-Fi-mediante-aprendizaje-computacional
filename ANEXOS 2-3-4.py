@@ -49,3 +49,50 @@ print("\nMatriz de confusión:")
 print(confusion_matrix(y_test, y_pred))
 print("\nReporte de clasificación:")
 print(classification_report(y_test, y_pred))
+
+
+
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+
+# Entrenar modelo con class_weight balanceado
+rf = RandomForestClassifier(n_estimators=100, random_state=42, class_weight="balanced")
+rf.fit(X_train, y_train)
+
+
+# Predecir y evaluar
+y_pred = rf.predict(X_test)
+
+
+print("=== Random Forest ===")
+print(f"Exactitud: {accuracy_score(y_test, y_pred):.2f}")
+print("\nMatriz de confusión:")
+print(confusion_matrix(y_test, y_pred))
+print("\nReporte de clasificación:")
+print(classification_report(y_test, y_pred))
+
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.utils.class_weight import compute_sample_weight
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+
+# Calcular pesos para cada muestra según la distribución de clases
+sample_weights = compute_sample_weight(class_weight="balanced", y=y_train)
+
+
+# Entrenar modelo con sample_weight
+gb = GradientBoostingClassifier(n_estimators=100, random_state=42)
+gb.fit(X_train, y_train, sample_weight=sample_weights)
+
+
+# Predecir y evaluar
+y_pred = gb.predict(X_test)
+
+
+print("=== Gradient Boosting ===")
+print(f"Exactitud: {accuracy_score(y_test, y_pred):.2f}")
+print("\nMatriz de confusión:")
+print(confusion_matrix(y_test, y_pred))
+print("\nReporte de clasificación:")
+print(classification_report(y_test, y_pred))
